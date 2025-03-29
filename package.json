@@ -1,1 +1,30 @@
-
+{
+  "name": "composableidentityrollup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/optanon/ComposableIdentityRollup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/optanon/ComposableIdentityRollup/issues"
+  },
+  "homepage": "https://github.com/optanon/ComposableIdentityRollup#readme",
+  "dependencies": {
+    "@zk-kit/incremental-merkle-tree": "^1.1.0",
+    "circomlibjs": "^0.1.7",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
+    "viem": "^2.24.2"
+  }
+}
