@@ -1,70 +1,36 @@
 # Composable Consent Rollup
 
-Composable Consent Rollup is a modular Zero-Knowledge-based proof system that allows anonymous opt-in/opt-out verification using Merkle membership and user consent signals. The circuit can be integrated into larger identity or access-control systems, enabling privacy-preserving consent flows.
+Composable Consent Rollup is a minimal zero-knowledge module that allows anonymous, verifiable consent logic (opt-in / opt-out) using Circom, SnarkJS and Poseidon-based Merkle trees.
 
-## Features
+The project was submitted to the Espresso x DoraHacks Hackathon in the “Build Something Real” category. It focuses on privacy, composability and real-world applicability within decentralized identity systems.
 
-- Merkle tree inclusion proof
-- ZK-based user consent (opt-in/opt-out)
-- Modular Circom circuit design
-- Groth16 proof system via snarkjs
-- Ready for Solidity Verifier export
-- Clean structure for integration or hackathon submission
+## What It Does
 
-## Structure
+- Implements a Merkle membership proof using Poseidon hash and incremental tree logic.
+- Uses Groth16 to prove Merkle inclusion without revealing the leaf.
+- Includes a Solidity verifier contract to validate the proof on-chain.
+- Designed for integration into modular identity stacks and privacy-preserving systems.
 
-ComposableConsentRollup/
-│
-├── circuits/                # Circom circuits (ConsentProof, MerkleMembership)
-├── scripts/                 # JS scripts for setup, proof generation, verification
-├── inputs_outputs/          # Example input files and outputs
-├── trusted_setup/           # Powers of Tau files (.ptau)
-├── js_witness_generators/   # Witness generation artifacts (ignored in repo)
-├── test/                    # Placeholder for test cases (optional)
-├── frontend/                # Placeholder for optional UI integration
-└── README.md
+## Technical Overview
 
-## Quick Start
+- Circuit: `merkleMembership.circom`
+- Setup: ptau 14 (`pot14_final.ptau`)
+- Proof system: Groth16
+- Verifier: generated via SnarkJS and ready for on-chain deployment
 
-Install dependencies:
-```bash
-npm install
-```
+## Proof Artifacts
 
-Compile circuit:
-```bash
-circom circuits/consentProof.circom --r1cs --wasm --sym -o circuits/
-```
+- `input.json` – minimal dummy input for testing (leaf, path, root)
+- `witness.wtns` – generated witness for the proof
+- `merkleMembership.zkey` – proving key
+- `proof.json` – final zk-proof
+- `public.json` – corresponding public inputs
 
-Trusted setup:
-```bash
-snarkjs powersoftau new bn128 14 pot14_0000.ptau
-snarkjs powersoftau contribute pot14_0000.ptau pot14_final.ptau
-snarkjs powersoftau prepare phase2 pot14_final.ptau pot14_prepared.ptau
-snarkjs groth16 setup circuits/consentProof.r1cs pot14_prepared.ptau consentProof.zkey
-```
+## Notes
 
-Proof generation:
-```bash
-snarkjs wtns calculate circuits/consentProof_js/consentProof.wasm circuits/input/circuit_input_consentproof.json witness.wtns
-snarkjs groth16 prove consentProof.zkey witness.wtns proof.json public.json
-```
+The full zk-proof process was completed shortly before submission. Due to a last-minute mismatch between circuit and proving key, earlier attempts failed silently or with inconsistent witness lengths. These were resolved by rebuilding the entire flow using the correct ptau and consistent input structure.
 
-Verify proof:
-```bash
-snarkjs zkey export verificationkey consentProof.zkey verification_key.json
-snarkjs groth16 verify verification_key.json public.json proof.json
-```
+A demo video was planned but not completed in time. All proof components and circuit logic are verifiable and functional.
 
-## Git Push
+## Repository Structure
 
-When ready to submit:
-```bash
-git add .
-git commit -m "Final submission: Composable Consent Rollup"
-git push origin main
-```
-
-## License
-
-MIT
