@@ -34,3 +34,48 @@ A demo video was planned but not completed in time. All proof components and cir
 
 ## Repository Structure
 
+```
+ComposableIdentityRollup/
+├── circuits/
+│   ├── merkleMembership.circom
+│   ├── merkleMembership_js/
+│   │   ├── merkleMembership.wasm
+│   │   ├── generate_witness.js
+│   │   ├── witness_calculator.js
+│   │   └── merkleMembership.r1cs
+│   └── Verifier.sol
+├── input.json
+├── witness.wtns
+├── merkleMembership.zkey
+├── proof.json
+├── public.json
+├── verification_key.json
+├── pot14_final.ptau
+└── README.md
+```
+
+## How to Reproduce the Proof
+
+To verify the zero-knowledge proof locally, run the following steps from the project root:
+
+```bash
+# 1. Generate the witness
+node circuits/merkleMembership_js/generate_witness.js circuits/merkleMembership_js/merkleMembership.wasm input.json witness.wtns
+
+# 2. Generate the zk-SNARK proof
+snarkjs groth16 prove merkleMembership.zkey witness.wtns proof.json public.json
+
+# 3. Export the verification key (only needed once)
+snarkjs zkey export verificationkey merkleMembership.zkey verification_key.json
+
+# 4. Verify the proof
+snarkjs groth16 verify verification_key.json public.json proof.json
+```
+
+The expected result of step 4 is:
+
+```
+[INFO] snarkJS: OK!
+```
+
+This confirms that the proof is valid and matches the circuit, input, and verification key.

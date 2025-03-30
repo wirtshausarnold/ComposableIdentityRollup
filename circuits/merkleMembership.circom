@@ -27,4 +27,4 @@ template MerkleMembership(depth) {
     isMember <== eq.out;
 }
 
-// component main = MerkleMembership(20);
+component main = MerkleMembership(20);
